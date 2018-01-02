@@ -8,6 +8,7 @@ def do_something(lock, height_queue):
     # lock.release()
     pass
 
+
 def main():
     height_queue = multiprocessing.Queue(5)
     points_to_displace_queue = multiprocessing.Queue(5)
