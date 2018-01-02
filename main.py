@@ -2,11 +2,6 @@ import multiprocessing
 from joeydash import set_point_to_displace
 
 
-def do_something(lock, height_queue):
-    # lock.acquire()
-    # height_queue.put(100)
-    # lock.release()
-    pass
 
 def main():
     height_queue = multiprocessing.Queue(5)
@@ -19,6 +14,7 @@ def main():
     do_something_process.start()
     set_point_to_displace_process.join()
     do_something_process.join()
+
 
 
 if __name__ == "__main__":
