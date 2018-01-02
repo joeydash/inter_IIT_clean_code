@@ -36,7 +36,7 @@ def set_point_to_displace(height_queue, points_to_displace_queue):
             else:
                 pass
             if points_to_displace_queue.full():
-                points_to_displace_queue.clear()
+                points_to_displace_queue.queue.clear()
                 points_to_displace_queue.put(point_to_displace)
             else:
                 points_to_displace_queue.put(point_to_displace)
