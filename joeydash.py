@@ -7,8 +7,11 @@ def set_point_to_displace(lock, height_queue, points_to_displace_queue):
     while True:
         cam_constant = 557
         lock.acquire()
-        cam_height = height_queue.get()
-        # lock.release()
+        if height_queue.empty():
+            cam_height = 0
+        else:
+            cam_height = height_queue.get()
+        lock.release()
         lower_colour = np.array([20, 45, 80])
         upper_colour = np.array([46, 130, 220])
         point_to_displace = np.zeros(2)
@@ -34,7 +37,7 @@ def set_point_to_displace(lock, height_queue, points_to_displace_queue):
                                      (y_displacement_in_pixels * cam_height) / cam_constant]
         else:
             pass
-        # lock.acquire()
+        lock.acquire()
         if points_to_displace_queue.full():
             points_to_displace_queue.get()
             points_to_displace_queue.put(point_to_displace)

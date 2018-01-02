@@ -3,10 +3,10 @@ from joeydash import set_point_to_displace
 
 
 def do_something(lock, height_queue):
-    lock.acquire()
-    height_queue.put(100)
-    lock.release()
-
+    # lock.acquire()
+    # height_queue.put(100)
+    # lock.release()
+    pass
 
 def main():
     height_queue = multiprocessing.Queue(5)
