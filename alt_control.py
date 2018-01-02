@@ -119,7 +119,7 @@ def control_main(lock, height_queue, points_to_displace_queue)
 		lock.release()
 
 		xy_position_control(error_xy[1],error_xy[0],kp_velx,kp_vely,vehicle.altitude.yaw)
-  		vehicle.send_mavlink(msg)
+		vehicle.send_mavlink(msg)
 
 
 	vehicle.mode=VehicleMode("LAND")
