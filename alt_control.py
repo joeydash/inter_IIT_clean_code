@@ -120,7 +120,7 @@ def control_main(height_queue, points_to_displace_queue):
         alt_data = get_alt(prev_val_read, curr_time - prev_time)
         prev_val_read = alt_data[1]
         if height_queue.full():
-            height_queue.queue.clear()
+            height_queue.get()
             height_queue.put(alt_data[0])
         else:
             height_queue.put(alt_data[0])
