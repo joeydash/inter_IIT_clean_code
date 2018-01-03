@@ -38,8 +38,8 @@ time.sleep(5)
 
 
 def main():
-    height_queue = multiprocessing.Queue(1)
-    points_to_displace_queue = multiprocessing.Queue(1)
+    height_queue = multiprocessing.Queue()
+    points_to_displace_queue = multiprocessing.Queue()
     set_point_to_displace_process = multiprocessing.Process(target=set_point_to_displace, args=(height_queue, points_to_displace_queue))
     control_main_processing = multiprocessing.Process(target=control_main, args=(height_queue, points_to_displace_queue,vehicle))
     set_point_to_displace_process.start()

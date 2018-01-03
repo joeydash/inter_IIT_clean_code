@@ -34,10 +34,6 @@ def set_point_to_displace(height_queue, points_to_displace_queue):
                     y_displacement_in_pixels = (height / 2) - ((2 * y + h) / 2)
                     point_to_displace = [(x_displacement_in_pixels * cam_height) / cam_constant,
                                          (y_displacement_in_pixels * cam_height) / cam_constant]
+                points_to_displace_queue.put(point_to_displace)
             else:
                 pass
-            if points_to_displace_queue.full():
-                points_to_displace_queue.get()
-                points_to_displace_queue.put(point_to_displace)
-            else:
-                points_to_displace_queue.put(point_to_displace)

@@ -101,26 +101,23 @@ def control_main(height_queue, points_to_displace_queue,vehicle):
         print(curr_alt)
         alt_data = get_alt(prev_val_read, curr_time - prev_time, curr_alt,vehicle)
         prev_val_read = alt_data[1]
-        if height_queue.full():
-            height_queue.get()
-            height_queue.put(alt_data[0])
-        else:
-            height_queue.put(alt_data[0])
+        height_queue.put(alt_data[0])
         prev_time = curr_time
-        while points_to_displace_queue.empty:
+        if points_to_displace_queue.empty:
             pass
-        error_xy = points_to_displace_queue.get()
-
-        msg = xy_position_control(error_xy[1], error_xy[0], kp_velx, kp_vely, vehicle.altitude.yaw)
-        vehicle.send_mavlink(msg)
-        now = time.time()
-        radius = math.sqrt(error_xy[0] ** 2 + error_xy[1] ** 2)
-        # break loop if it holds altitude for more than 5 secs
-        if radius + 5 > radius > radius - 5:
-            if now - then > 5:
-                break
         else:
-            then = now
+            error_xy = points_to_displace_queue.get()
+
+            msg = xy_position_control(error_xy[1], error_xy[0], kp_velx, kp_vely, vehicle.altitude.yaw)
+            vehicle.send_mavlink(msg)
+            now = time.time()
+            radius = math.sqrt(error_xy[0] ** 2 + error_xy[1] ** 2)
+            # break loop if it holds altitude for more than 5 secs
+            if radius + 5 > radius > radius - 5:
+                if now - then > 5:
+                    break
+            else:
+                then = now
 
     vehicle.mode = VehicleMode("LAND")
     vehicle.close()
