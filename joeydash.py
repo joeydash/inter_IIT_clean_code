@@ -37,3 +37,4 @@ def set_point_to_displace(height_queue, points_to_displace_queue):
                 points_to_displace_queue.put(point_to_displace)
             else:
                 pass
+            cv2.imshow("frame", frame)
