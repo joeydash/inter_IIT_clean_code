@@ -29,11 +29,11 @@ def set_point_to_displace(height_queue, points_to_displace_queue):
                     cv2.rectangle(frame, (x, y), (x + w, y + h), (255, 0, 0), 2)
                     cv2.circle(frame, ((2 * x + w) / 2, (2 * y + h) / 2), 2, (0, 0, 255), -1)
                     cv2.circle(frame, (width / 2, height / 2), 2, (0, 0, 255), -1)
-                    cv2.imshow("frame", frame)
                     x_displacement_in_pixels = ((2 * x + w) / 2) - (width / 2)
                     y_displacement_in_pixels = (height / 2) - ((2 * y + h) / 2)
                     point_to_displace = [(x_displacement_in_pixels * cam_height) / cam_constant,
                                          (y_displacement_in_pixels * cam_height) / cam_constant]
+                print(points_to_displace_queue)
                 points_to_displace_queue.put(point_to_displace)
             else:
                 pass
