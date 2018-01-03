@@ -7,10 +7,11 @@ def set_point_to_displace(height_queue, points_to_displace_queue):
     while True:
         cam_constant = 557
         if height_queue.empty():
+            print("empty queue")
             pass
         else:
             cam_height = height_queue.get()
-            print(cam_height)
+            
             lower_colour = np.array([20, 45, 80])
             upper_colour = np.array([46, 130, 220])
             point_to_displace = np.zeros(2)

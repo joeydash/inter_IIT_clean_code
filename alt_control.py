@@ -5,10 +5,18 @@ from dronekit import connect, VehicleMode, LocationGlobal, LocationGlobalRelativ
 from pymavlink import mavutil  # Needed for command message definitions
 import time
 
-from xy_control import xy_position_control
+# from xy_control import xy_position_control
 
 
-def get_alt(prev_val_read, delta_t, curr_val_read, curr_alt):
+# connection_string = '/dev/ttyACM0'
+# connection_string = "tcp:127.0.0.1:5763"
+# # Connect to the Vehicle..
+# print('Connecting to vehicle on: %s' % connection_string)
+# vehicle = connect(connection_string, wait_ready=True)
+# print("works")
+
+
+def get_alt(prev_val_read, delta_t, curr_alt,vehicle):
     curr_val_read = vehicle.location.global_relative_frame.alt
     if curr_val_read == prev_val_read:
         curr_alt = curr_alt + vehicle.velocity[2] * (delta_t)
@@ -23,20 +31,20 @@ def get_alt(prev_val_read, delta_t, curr_val_read, curr_alt):
 # -----------call this function to control altitude----------------------#
 # -----------------------------------------------------------------------#
 
-def altitude_control(target_altitude, kp_alt):
+def altitude_control(target_altitude, kp_alt,vehicle):
     # declaring variables
     prev_val_read = vehicle.location.global_relative_frame.alt
     prev_time = time.time()
     then = time.time()
 
     curr_alt = vehicle.location.global_relative_frame.alt
-    curr_val_read = curr_alt
+
     while True:
 
         curr_time = time.time()
 
         # prediction: updating curr_alt with velocity*dt if alt feedback is not updated
-        alt_data = get_alt(prev_val_read, curr_time - prev_time, curr_val_read, curr_alt)
+        alt_data = get_alt(prev_val_read, curr_time - prev_time, curr_alt,vehicle)
         curr_alt = alt_data[0]
         prev_val_read = alt_data[1]
 
@@ -76,48 +84,22 @@ def altitude_control(target_altitude, kp_alt):
             then = now
 
 
-def control_main(height_queue, points_to_displace_queue):
-    # print "works!"
-    i = 1
-    while True:
-        height_queue.put(i)
-        i += 1
-    kp_alt = .5
+def control_main(height_queue, points_to_displace_queue,vehicle):
     kp_velx = .5
     kp_vely = .5
 
-    connection_string = '/dev/ttyACM0'
-    # connection_string = "tcp:127.0.0.1:5763"
-    # Connect to the Vehicle..
-    print('Connecting to vehicle on: %s' % connection_string)
-    vehicle = connect(connection_string, wait_ready=True)
-
-    print("Basic pre-arm checks")
-    vehicle.mode = VehicleMode("LOITER")
-
-    print("Arming motors")
-    vehicle.armed = True
-
-    while not vehicle.armed:
-        print("Waiting for arming...")
-        time.sleep(1)
-
-    print("Taking off!")
-    altitude_control(3, kp_alt)
-
-    vehicle.channels.overrides['3'] = 1500
-    print(vehicle.location.global_relative_frame.alt)
-    print("holding")
-    time.sleep(5)
 
     # initialising variables
+    curr_alt = vehicle.location.global_relative_frame.alt
     prev_val_read = vehicle.location.global_relative_frame.alt
     prev_time = time.time()
     then = time.time()
 
     while True:
+        print("control loop started")
         curr_time = time.time()
-        alt_data = get_alt(prev_val_read, curr_time - prev_time)
+        print(curr_alt)
+        alt_data = get_alt(prev_val_read, curr_time - prev_time, curr_alt,vehicle)
         prev_val_read = alt_data[1]
         if height_queue.full():
             height_queue.get()
