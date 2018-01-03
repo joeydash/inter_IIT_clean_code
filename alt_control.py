@@ -5,7 +5,7 @@ from dronekit import connect, VehicleMode, LocationGlobal, LocationGlobalRelativ
 from pymavlink import mavutil  # Needed for command message definitions
 import time
 
-# from xy_control import xy_position_control
+from xy_control import xy_position_control
 
 
 # connection_string = '/dev/ttyACM0'

@@ -1,18 +1,15 @@
 
 from __future__ import print_function
-import multiprocessing
-from joeydash import set_point_to_displace
-from alt_control import control_main, altitude_control
-import math
 
-from dronekit import connect, VehicleMode, LocationGlobal, LocationGlobalRelative
-from pymavlink import mavutil  # Needed for command message definitions
+import multiprocessing
 import time
 
-from xy_control import xy_position_control
+from dronekit import connect, VehicleMode
 
+from alt_control import control_main, altitude_control
+from joeydash import set_point_to_displace
 
-connection_string = '/dev/ttyACM0'
+# connection_string = '/dev/ttyACM0'
 connection_string = "tcp:127.0.0.1:5763"
 # Connect to the Vehicle..
 print('Connecting to vehicle on: %s' % connection_string)
